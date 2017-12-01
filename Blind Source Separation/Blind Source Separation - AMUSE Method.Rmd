@@ -1,0 +1,178 @@
+===============================================================================================
+
+Blind Source Separation - AMUSE Method.Rmd
+
+
+E:\MIJN DATA SCIENCE\_MIJN DATA SCIENCE PROJECTS\_R\Blind Source Separation
+
+https://cran.r-project.org/web/packages/JADE/index.html
+
+Creation Date: 01-12-2017
+Last Edited  : 01-12-2017
+
+
+Blind Signal Separation: Statistical Principles
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.462.9738&rep=rep1&type=pdf
+E:\MIJN DATA SCIENCE\_MIJN DATA SCIENCE PROJECTS\_R\Blind Source Separation\Blind Signal Separation - Statistical Principles.pdf
+
+
+https://en.wikipedia.org/wiki/Blind_signal_separation
+E:\MIJN DATA SCIENCE\_MIJN DATA SCIENCE PROJECTS\_R\Blind Source Separation\Blind Signal Separation - Statistical Principles.pdf
+
+Blind signal separation
+From Wikipedia, the free encyclopedia
+Blind signal separation (BSS), also known as blind source separation, is the separation of a set of source signals from a set of mixed signals, without the aid of information (or with very little information) about the source signals or the mixing process. This problem is in general highly underdetermined, but useful solutions can be derived under a surprising variety of conditions. Much of the early literature in this field focuses on the separation of temporal signals such as audio. However, blind signal separation is now routinely performed on multidimensional data, such as images and tensors[citation needed], which may involve no time dimension whatsoever.
+
+===============================================================================================
+
+AMUSE {JADE}	R Documentation
+AMUSE Method for Blind Source Separation
+
+Description
+
+AMUSE method for the second order blind source separation problem. The function estimates the unmixing matrix in a second order stationary source separation model by jointly diagonalizing the covariance matrix and an autocovariance matrix at lag k.
+
+Usage
+
+AMUSE(x, ...)
+
+## Default S3 method:
+AMUSE(x, k = 1, ...)
+## S3 method for class 'ts'
+AMUSE(x, ...)
+Arguments
+
+x	
+a numeric matrix or a multivariate time series object of class ts. Missing values are not allowed.
+k	
+integer lag for the autocovariance matrix, must be larger than 0. Default is 1.
+...	
+further arguments to be passed to or from methods.
+Details
+
+The lag k has a huge effect on the performance and it should be chosen so that the eigenvalues of autocovariance matrix are distinct. The function assumes always as many sources as there are time series.
+
+Value
+
+A list with class 'bss' containing the following components:
+
+W	
+estimated unmixing matrix.
+EV	
+eigenvectors of autocovariance matrix.
+k	
+lag of the autocovariance matrix used.
+S	
+estimated sources as time series objected standardized to have mean 0 and unit variances.
+Author(s)
+
+Klaus Nordhausen
+
+References
+
+Tong, L., Soon, V.C., Huang, Y.F. and Liu, R. (1990), AMUSE: a new blind identification algorithm, in Proceedings of IEEE International Symposium on Circuits and Systems 1990, 1784–1787.
+
+Miettinen, J., Nordhausen, K., Oja, H. and Taskinen, S. (2012), Statistical properties of a blind source separation estimator for stationary time series, Statistics & Probability Letters, 82, 1865–1873.
+
+Miettinen, J., Nordhausen, K. and Taskinen, S. (2017), Blind Source Separation Based on Joint Diagonalization in R: The Packages JADE and BSSasymp, Journal of Statistical Software, 76, 1–31, <doi:10.18637/jss.v076.i02>.
+
+See Also
+
+ts
+
+
+Examples
+
+
+# creating some toy data
+A<- matrix(rnorm(9),3,3)
+s1 <- arima.sim(list(ar=c(0.3,0.6)),1000)
+s2 <- arima.sim(list(ma=c(-0.3,0.3)),1000)
+s3 <- arima.sim(list(ar=c(-0.8,0.1)),1000)
+
+S <- cbind(s1,s2,s3)
+X <- S %*% t(A)
+
+res1<-AMUSE(X)
+res1
+coef(res1)
+plot(res1) # compare to plot.ts(S)
+MD(coef(res1),A)
+
+# input of a time series
+X2<- ts(X, start=c(1961, 1), frequency=12)
+plot(X2)
+res2<-AMUSE(X2, k=2)
+plot(res2)
+[Package JADE version 2.0-0 Index]
+
+
+
+
+
+Examples
+
+
+```{r}
+require("JADE")
+```
+
+```{r}
+# creating some toy data
+A<- matrix(rnorm(9),3,3)
+s1 <- arima.sim(list(ar=c(0.3,0.6)),1000)
+s2 <- arima.sim(list(ma=c(-0.3,0.3)),1000)
+s3 <- arima.sim(list(ar=c(-0.8,0.1)),1000)
+
+S <- cbind(s1,s2,s3)
+X <- S %*% t(A)
+
+```
+
+```{r}
+s
+```
+
+
+```{r}
+X
+```
+
+
+```{r}
+res1<-AMUSE(X)
+res1
+coef(res1)
+plot(res1) # compare to plot.ts(S)
+MD(coef(res1),A)
+```
+
+
+```{r}
+plot.ts(S)
+```
+
+
+
+
+```{r}
+# input of a time series
+X2<- ts(X, start=c(1961, 1), frequency=12)
+plot(X2)
+res2<-AMUSE(X2, k=2)
+plot(res2)
+```
+
+
+
+
+
+
+===============================================================================================
+
+```{r}
+sessionInfo()
+```
+
+
+===============================================================================================
